@@ -6,6 +6,7 @@ class City:
         self.lat = lat
         self.lon = lon
 
+
 # We have a collection of US cities with population over 750,000 stored in the
 # file "cities.csv". (CSV stands for "comma-separated values".)
 #
@@ -30,7 +31,7 @@ def cityreader(cities=[]):
     with open(os.path.join(sys.path[0],'cities.csv'),mode='r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            print(row['city'])
+          
             city = City(row['city'], float(row['lat']),float(row['lng']))
             cities.append(city)
     return cities
@@ -56,7 +57,7 @@ for c in cities:
 # the input data so that it's always one or the other, then search for cities.
 # In the example below, inputting 32, -120 first and then 45, -100 should not
 # change the results of what the `cityreader_stretch` function returns.
-#
+#lat>32, 
 # Example I/O:
 #
 # Enter lat1,lon1: 45,-100
@@ -72,13 +73,32 @@ for c in cities:
 # Salt Lake City: (40.7774,-111.9301)
 
 # TODO Get latitude and longitude values from the user
+i = 0
+latlon=[]
+while i <=1:
+    lat = float(input(f"Enter lat-{i+1}:"))
+    lon = float(input(f"Enter lon {i+1}: "))
+    input_value = dict(lat=lat, lon=lon)
+    latlon.append(input_value)
+    print(latlon)
+    i+=1
+lat =[value['lat'] for value in latlon]
+lon = [value['lon'] for value in latlon]
+print(f"minlat: {min(lat)}")
+print(f"maxlat: {max(lat)}")
+print(f"minlon: {min(lon)}")
+print(f"maxlon: {max(lon)}")
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
   # within will hold the cities that fall within the specified region
-  within = []
+  cites = cities
+  within = [city for city in cities if (city.lat >= lat1 and city.lon >= lon1) and (city.lat <= lat2 and city.lon <= lon2)]
 
   # TODO Ensure that the lat and lon valuse are all floats
   # Go through each city and check to see if it falls within 
   # the specified coordinates.
-
+  for city in within:
+     f"{city.name}, {city.lat}, {city.lon}"
   return within
+
+print(cityreader_stretch(min(lat),min(lon), max(lat), max(lon),cities))
